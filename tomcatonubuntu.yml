@@ -1,0 +1,22 @@
+---
+- name: installing tomcat 10 on ubuntu
+  hosts: all
+  become: yes
+- name: installing java and updating the cache
+  apt:
+    name: openjdk-11-jdk
+    state: latest
+    update_cache: yes
+    notify: javaversion
+    handlers:
+    - name: javaversion
+      print: java installed
+
+- name: creat a system user to lunch tomcat and configure it on nodes
+  user:
+    name: tomcat
+    create_Home: yes
+    group: tomcat
+    home: /opt/tomcat
+    shell: /bin/false
+    state: present
